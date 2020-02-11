@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>React Demo</title>
-
+    <link rel="stylesheet" href="https://unpkg.com/mocha@3.4.2/mocha.css">
     <style media="screen">
       .messageBox {
         border: 1px solid;
@@ -28,11 +28,12 @@
   </head>
   <body>
     <main id='content'></main>
-
+    <div id="mocha"></div>
     <script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
     <script type="text/javascript" src="https://unpkg.com/react@16.0.0/umd/react.production.min.js"></script>
     <script type="text/javascript" src="https://unpkg.com/react-dom@16.0.0/umd/react-dom.production.min.js"></script>
-
+    <script type="text/javascript" src="https://unpkg.com/chai@4.0.2/chai.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/mocha@3.4.2/mocha.js"></script>
     <script type="text/babel" data-presets="react">
       class NameInput extends React.Component {
         constructor(props){
@@ -81,6 +82,27 @@
         }
       }
       ReactDOM.render(<NameInput />, document.getElementById('content'));
+    </script>
+    <script type="text/babel" data-presets="react">
+      const assert = chai.assert
+      mocha.ui("bdd");
+      mocha.reporter("html");
+      describe("Example Tests", () => {
+        it("proved that maths works", () => {
+          assert.equal(5, 3+2, "Math works!");
+          assert.notEqual(3+2, 4, "This is wrong!");
+        })
+      })
+
+      describe("Document Tests", () => {
+        it("Rendered an empty messageBox", () => {
+          let msgBox = document.querySelector(".messageBox");
+          assert.isDefined(msgBox, "Message Box is in the document");
+          assert.include(msgBox.classList.value, "hidden", "MessageBox is hidden");
+          assert.equal(msgBox.innerText, "", "Message Box is empty");
+        })
+      })
+      mocha.run()
     </script>
   </body>
 </html>
